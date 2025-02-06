@@ -1,264 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Will You Be My Valentine, Sid? ❤️</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1/firebase.js"></script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <style>
-    /* General Styling */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Pacifico', cursive;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      color: #444;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confession Page for Sid and Shru ❤️</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1/firebase.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Comic Sans MS", "Arial", sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            color: #444;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
 
-    .container {
-      max-width: 800px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px 30px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      animation: fadeIn 1.5s ease-out;
-      position: relative;
-      z-index: 2;
-    }
+        .container {
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-out;
+        }
 
-    h1 {
-      font-size: 3rem;
-      color: #ff4f6d;
-      margin-bottom: 15px;
-      animation: float 3s ease-in-out infinite;
-    }
+        h1 {
+            font-size: 2.5rem;
+            color: #ff4f6d;
+            margin-bottom: 15px;
+        }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+        p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
 
-    p {
-      font-size: 1.2rem;
-      margin: 10px 0;
-    }
+        .heart-animation {
+            margin: 20px 0;
+        }
 
-    .heart-animation {
-      margin: 20px 0;
-    }
+        .reveal-message {
+            display: none;
+            font-size: 1.4rem;
+            margin-top: 20px;
+            color: #ff4f6d;
+            animation: fadeIn 1.5s ease-in-out;
+        }
 
-    .reveal-message, .questions-container, .final-question-container {
-      display: none;
-      font-size: 1.4rem;
-      margin-top: 20px;
-      color: #ff4f6d;
-      animation: fadeIn 1.5s ease-in-out;
-    }
+        .feelings-input {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
 
-    button {
-      padding: 10px 15px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #ff4f6d;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 10px;
-      transition: background-color 0.3s ease-in-out;
-    }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #ff4f6d;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease-in-out;
+        }
 
-    button:hover {
-      background-color: #e8435d;
-    }
+        button:hover {
+            background-color: #e8435d;
+        }
 
-    #noButton {
-      position: absolute;
-    }
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px auto;
+            border: 1px solid #ff4f6d;
+            border-radius: 5px;
+            outline: none;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        input[type="text"]:focus {
+            border-color: #e8435d;
+        }
 
-    .hearts {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 1;
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .hearts span {
-      position: absolute;
-      display: block;
-      width: 20px;
-      height: 20px;
-      background: #ff6b6b;
-      box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-      animation: animateHearts 5s linear infinite;
-      bottom: -20px;
-    }
+        /* Moving Animation for the "No" Button */
+        @keyframes moveNo {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(20px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
 
-    .hearts span:nth-child(1) {
-      left: 25%;
-      animation-delay: 0s;
-    }
+        .no-button {
+            animation: moveNo 1s infinite ease-in-out;
+        }
 
-    .hearts span:nth-child(2) {
-      left: 10%;
-      animation-delay: 2s;
-    }
-
-    .hearts span:nth-child(3) {
-      left: 70%;
-      animation-delay: 4s;
-    }
-
-    .hearts span:nth-child(4) {
-      left: 50%;
-      animation-delay: 6s;
-    }
-
-    .hearts span:nth-child(5) {
-      left: 85%;
-      animation-delay: 8s;
-    }
-
-    @keyframes animateHearts {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) rotate(720deg);
-        opacity: 0;
-      }
-    }
-
-    .glow {
-      animation: glow 2s infinite alternate;
-    }
-
-    @keyframes glow {
-      from {
-        text-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b, 0 0 30px #ff6b6b;
-      }
-      to {
-        text-shadow: 0 0 20px #ff6b6b, 0 0 30px #ff6b6b, 0 0 40px #ff6b6b;
-      }
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        .no-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body>
-  <div class="hearts">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-  <div class="container">
-    <h1 class="glow">🌹 Will You Be My Valentine, Sid? 🌹</h1>
-    <p>Sid, I’ve been waiting for this moment! ❤️</p>
+    <div class="container">
+        <h1>🌹 Heyy Sid 🌹</h1>
+        <p>Sid, I’ve been waiting for this moment! ❤️</p>
 
-    <div class="heart-animation">
-      <lottie-player
-        src="https://assets9.lottiefiles.com/packages/lf20_z9ed2jna.json"
-        background="transparent"
-        speed="1"
-        style="width: 300px; height: 300px;"
-        loop
-        autoplay>
-      </lottie-player>
+        <!-- Lottie Animation -->
+        <div class="heart-animation">
+            <lottie-player
+                src="https://assets9.lottiefiles.com/packages/lf20_z9ed2jna.json"
+                background="transparent"
+                speed="1"
+                style="width: 300px; height: 300px;"
+                loop
+                autoplay>
+            </lottie-player>
+        </div>
+
+        <!-- Reveal Button -->
+        <button onclick="revealMessage()">Tap Here to Know My Feelings!</button>
+        <div class="reveal-message" id="message">
+            Sid, you are my everything. 🥰 Can I call you mine forever? 💖
+            <br><br>
+            <button onclick="yesResponse()">Yes! 💕</button>
+            <button class="no-button" id="noButton" disabled>No 😔</button>
+        </div>
+
+        <!-- Feelings Input -->
+        <div class="feelings-input" id="feelingsInput">
+            <p>Sid, I would love to know what’s on your heart. Write your feelings below: 💖</p>
+            <input type="text" id="hisFeelings" placeholder="Type your feelings here..." />
+            <button onclick="submitFeelings()">Submit</button>
+        </div>
     </div>
 
-    <button onclick="revealMessage()">Tap Here to Know My Feelings!</button>
-    <div class="reveal-message" id="message">
-      Sid, you are my everything. 🥰 Can I call you mine forever? 💖
-      <br><br>
-      <button id="yesButton" onclick="yesResponse()">Yes! 💕</button>
-      <button id="noButton" onmouseover="moveButton()">No 😔</button>
-    </div>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAHw6qOkOWbFqVgwWWn3Mz9SqQpxm95E4A",
+            authDomain: "lovee-dovee-5b779.firebaseapp.com",
+            databaseURL: "https://lovee-dovee-5b779-default-rtdb.firebaseio.com",
+            projectId: "lovee-dovee-5b779",
+            storageBucket: "lovee-dovee-5b779.firebasestorage.app",
+            messagingSenderId: "194741409103",
+            appId: "1:194741409103:web:c3ea715eb3ce3c7f3a213a"
+        };
+        firebase.initializeApp(firebaseConfig);
 
-    <div class="questions-container" id="questions">
-      <p>Answer these cute questions for me, Sid! 💕</p>
-      <label>Do you believe in love at first sight?</label>
-      <button onclick="nextQuestion()">Yes! 💕</button>
-      <button onclick="noResponse()">No 😔</button>
-      
-      <label>Do you think we are meant to be together?</label>
-      <button onclick="nextQuestion()">Yes! 💕</button>
-      <button onclick="noResponse()">No 😔</button>
-      
-      <label>Will you always be by my side no matter what? 💖</label>
-      <button onclick="showFinalQuestion()">Yes! 💕</button>
-      <button onclick="noResponse()">No 😔</button>
-    </div>
+        // Realtime Database reference
+        const database = firebase.database().ref("confessions");
 
-    <div class="final-question-container" id="final-question">
-      <h2>🌹 One last thing, Sid... 🌹</h2>
-      <p>Will you be my Valentine? 💖</p>
-      <button onclick="finalYes()">Yes! 💕</button>
-      <button onclick="finalNo()">No 😔</button>
-    </div>
-  </div>
+        function revealMessage() {
+            document.getElementById('message').style.display = 'block';
+        }
 
-  <script>
-    function revealMessage() {
-      document.getElementById('message').style.display = 'block';
-    }
+        function yesResponse() {
+            document.getElementById('message').style.display = 'none'; // Hide initial message
+            document.getElementById('feelingsInput').style.display = 'block'; // Show input box
+        }
 
-    function yesResponse() {
-      document.getElementById('message').style.display = 'none';
-      document.getElementById('questions').style.display = 'block';
-    }
+        function noResponse() {
+            alert("It’s okay, Sid! Just hearing you out means the world to me. You’ll always be my favorite person. ❤️");
+        }
 
-    function nextQuestion() {
-      // Move to the next question (handled visually by showing next container)
-      document.getElementById('questions').style.display = 'block';
-    }
+        function submitFeelings() {
+            const feelings = document.getElementById('hisFeelings').value;
+            if (feelings) {
+                alert(`Thanks for sharing, Sid! You wrote: "${feelings}" 💕`);
+                saveFeelings(feelings); // Save to Firebase
+            } else {
+                alert("Sid, I’d love to hear your feelings! Please write something. 🥰");
+            }
+        }
 
-    function noResponse() {
-      alert("It’s okay, Sid! Just hearing you out means the world to me. You’ll always be my favorite person. ❤️");
-    }
-
-    function showFinalQuestion() {
-      document.getElementById('questions').style.display = 'none';
-      document.getElementById('final-question').style.display = 'block';
-    }
-
-    function finalYes() {
-      alert("Yay! 💖 You are my Valentine forever, Sid! 🥰");
-    }
-
-    function finalNo() {
-      alert("It’s okay, Sid. You’ll always have a special place in my heart. ❤️");
-    }
-
-    function moveButton() {
-      const noButton = document.getElementById('noButton');
-      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
-      noButton.style.left = `${x}px`;
-      noButton.style.top = `${y}px`;
-    }
-  </script>
+        function saveFeelings(feelings) {
+            database.push({
+                sidFeelings: feelings,
+                timestamp: new Date().toISOString()
+            })
+            .then(() => {
+                console.log("Feelings saved to Firebase!");
+                alert("Your feelings have been saved. Thank you, Sid! ❤️");
+            })
+            .catch((error) => {
+                console.error("Error saving feelings: ", error);
+            });
+        }
+    </script>
 </body>
 </html>
