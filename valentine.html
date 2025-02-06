@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? 💖</title>
+    <style>
+        body {
+            background-color: #ffecf2;
+            font-family:  Brush Script;
+            text-align: center;
+            padding: 30px;
+        }
+        .story {
+            font-size: 40px;
+            margin: 20px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .visible {
+            opacity: 1;
+        }
+        .heart {
+            font-size: 50px;
+            animation: heartbeat 1s infinite alternate;
+            color: red;
+        }
+        @keyframes heartbeat {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .yes {
+            background-color: #ff5a5f;
+            color: white;
+            margin-right: 20px;
+        }
+        .no {
+            background-color: #cccccc;
+            color: black;
+            position: absolute;
+        }
+        .hidden {
+            display: none;
+        }
+      #final-question {
+    margin-top: 30px; /* Adjust the value to increase the distance */
+    color: red;
+}
+    </style>
+</head>
+<body>
+
+    <h1>🌹 A Little Love Story... Just for You! 🌹</h1>
+    
+    <div class="story" id="scene1">🌅 <br> "From the first morning we met..."</div>
+    <div class="story" id="scene2">🍕 <br> "To our cutest food dates..."</div>
+    <div class="story" id="scene3">😂 <br> "To the times we laughed till we cried..."</div>
+    <div class="story" id="scene4">💖 <br> "And how my heart beats only for you..."</div>
+    <div class="story" id="scene5">🌹 <br> "Now, my love... I have a question!"</div>
+
+    <h1 id="final-question" class="hidden">Will you be my Valentine? ❤</h1>
+
+    <div class="buttons hidden" id="buttons">
+        <button class="btn yes" onclick="showLove()">YES 💕</button>
+        <button class="btn no" id="noBtn" onmouseover="moveButton()">NO 🙃</button>
+    </div>
+
+    <h2 id="response" class="hidden heart">YAY! I LOVE YOU! ❤</h2>
+
+    <script>
+        let scenes = document.querySelectorAll(".story");
+        let currentScene = 0;
+
+        function showScenes() {
+            if (currentScene < scenes.length) {
+                scenes[currentScene].classList.add("visible");
+                currentScene++;
+                setTimeout(showScenes, 2000);
+            } else {
+                document.getElementById("final-question").classList.remove("hidden");
+                document.getElementById("buttons").classList.remove("hidden");
+            }
+        }
+
+        setTimeout(showScenes, 1000);
+
+        function moveButton() {
+            let btn = document.getElementById("noBtn");
+            let x = Math.random() * window.innerWidth - 100;
+            let y = Math.random() * window.innerHeight - 100;
+            btn.style.left = x + "px";
+            btn.style.top = y + "px";
+        }
+
+        function showLove() {
+            document.getElementById("buttons").classList.add("hidden");
+            document.getElementById("response").classList.remove("hidden");
+        }
+    </script>
+
+</body>
+</html>
