@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confession Page for Sid and Shru ❤️</title>
+    <title>Confession Page for Sid and ADi ❤️</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1/firebase.js"></script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
@@ -151,12 +151,31 @@
             <button class="no-button" id="noButton" disabled>No 😔</button>
         </div>
 
-        <!-- Feelings Input -->
-        <div class="feelings-input" id="feelingsInput">
-            <p>Sid, I would love to know what’s on your heart. Write your feelings below: 💖</p>
-            <input type="text" id="hisFeelings" placeholder="Type your feelings here..." />
-            <button onclick="submitFeelings()">Submit</button>
+        <!-- Questions Section -->
+        <div class="question1" id="question1" style="display: none;">
+            <p>Q1: Hugs or Kisses? 🤗💋</p>
+            <label><input type="radio" name="affection" value="hugs" onclick="showSecondQuestion()"> 🤗 Hugs</label>
+            <label><input type="radio" name="affection" value="kisses" onclick="showSecondQuestion()"> 💋 Kisses</label>
         </div>
+        
+        <!-- Second Question (Initially Hidden) -->
+        <div class="question2" id="question2" style="display: none;">
+            <p>Q2: Do you like surprises? 🎁</p>
+            <label><input type="radio" name="surprise" value="yes"> Yes 😍</label>
+            <label><input type="radio" name="surprise" value="no"> No 😅</label>
+        
+            <br><br>
+            <button onclick="submitQuestions()">Next</button>
+        </div>
+<!-- Feelings Input (Initially Hidden) -->
+<div class="feelings-input" id="feelingsInput" style="display: none;">
+    <p>Sid, I would love to know what’s on your heart. Write your feelings below: 💖</p>
+    <input type="text" id="hisFeelings" placeholder="Type your feelings here..." />
+    <button onclick="submitFeelings()">Submit</button>
+</div>
+
+
+        
     </div>
 
     <script>
@@ -180,37 +199,62 @@
         }
 
         function yesResponse() {
-            document.getElementById('message').style.display = 'none'; // Hide initial message
-            document.getElementById('feelingsInput').style.display = 'block'; // Show input box
-        }
+    document.getElementById('message').style.display = 'none'; // Hide the confession message
+    document.getElementById('question1').style.display = 'block'; // Show the first question
+}
+
+function showSecondQuestion() {
+    document.getElementById('question2').style.display = 'block'; // Reveal Q2
+}
+
+function submitQuestions() {
+    const surprise = document.querySelector('input[name="surprise"]:checked');
+
+    if (surprise) {
+        document.getElementById('question1').style.display = 'none'; // Hide Q1
+        document.getElementById('question2').style.display = 'none'; // Hide Q2
+        document.getElementById('feelingsInput').style.display = 'block'; // Show Feelings Input
+    } else {
+        alert("Please answer the second question before proceeding! 😊");
+    }
+}
 
         function noResponse() {
             alert("It’s okay, Sid! Just hearing you out means the world to me. You’ll always be my favorite person. ❤️");
         }
 
         function submitFeelings() {
-            const feelings = document.getElementById('hisFeelings').value;
-            if (feelings) {
-                alert(`Thanks for sharing, Sid! You wrote: "${feelings}" 💕`);
-                saveFeelings(feelings); // Save to Firebase
-            } else {
-                alert("Sid, I’d love to hear your feelings! Please write something. 🥰");
-            }
-        }
+    const feelings = document.getElementById('hisFeelings').value;
+    if (feelings) {
+        alert(`Thanks for sharing, Sid! You wrote: "${feelings}" 💕`);
+        saveFeelings(feelings); // Save to Firebase
 
-        function saveFeelings(feelings) {
-            database.push({
-                sidFeelings: feelings,
-                timestamp: new Date().toISOString()
-            })
-            .then(() => {
-                console.log("Feelings saved to Firebase!");
-                alert("Your feelings have been saved. Thank you, Sid! ❤️");
-            })
-            .catch((error) => {
-                console.error("Error saving feelings: ", error);
-            });
-        }
+        // Redirect to valentine.html after 2 seconds
+        setTimeout(() => {
+            window.location.href = "valentine.html";
+        }, 2000);
+    } else {
+        alert("Sid, I’d love to hear your feelings! Please write something. 🥰");
+    }
+}
+
+function saveFeelings(feelings) {
+    database.push({
+        sidFeelings: feelings,
+        timestamp: new Date().toISOString()
+    })
+    .then(() => {
+        console.log("Feelings saved to Firebase!");
+        alert("Your feelings have been saved. Thank you, Sid! ❤️");
+    })
+    .catch((error) => {
+        console.error("Error saving feelings: ", error);
+    });
+}
+
+
+   
+
     </script>
 </body>
 </html>
